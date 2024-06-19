@@ -10,14 +10,12 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Http\Request;
 
-
 /**
  * Route protected by auth sanctum.
  */
 Route::middleware(['auth:api'])->get('/user', function (Request $request) {
     return $request->user();
 });
-
 
 
 /**
@@ -48,7 +46,7 @@ Route::post('/email/verification-notification', [EmailVerificationNotificationCo
                 ->name('verification.send');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-                ->middleware('auth')
+                ->middleware(['auth:api'])
                 ->name('logout');
 
 

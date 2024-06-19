@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\AuthUserResource;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 
 class AuthenticatedSessionController extends Controller
@@ -20,7 +19,7 @@ class AuthenticatedSessionController extends Controller
 
         $user = $request->user();
        
-        $user->currentAccessToken()?->delete();
+        $user->tokens()->delete();
 
         $user->token = $user->createToken($user->name)->plainTextToken;
 
@@ -32,12 +31,10 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): JsonResponse
     {
-        Auth::guard('api')->logout();
+        $user = $request->user();
+       
+        $user->tokens()->delete();
 
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return $this->respond(true,'Logged out.');
+        return $this->respond(true, "Logged out successfully.");
     }
 }

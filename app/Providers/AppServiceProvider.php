@@ -32,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
             // Capture the token from the cookie and set is as Bearer Token.
             if ($request->cookie(env('AUTH_COOKIE_NAME','login'))) {
                 $request->headers->set('Authorization', 'Bearer ' . $request->cookie(env('AUTH_COOKIE_NAME','login')));
+            }else{
+                return response()->json(['error'=> 'Unauthorized'],401);
             }
 
             // Return the user based on sanctum guard

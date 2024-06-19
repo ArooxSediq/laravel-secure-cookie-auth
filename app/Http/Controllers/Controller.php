@@ -8,7 +8,7 @@ abstract class Controller
     /**
      * 
      */
-    public function respond($data, $message,$code = 200) : JsonResponse
+    public function respond($data, $message, $code = 200) : JsonResponse
     {
         $response = [
             'status' => true,
