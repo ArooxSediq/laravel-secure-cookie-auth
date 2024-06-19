@@ -1,0 +1,1 @@
+# laravel-secure-cookie-auth
