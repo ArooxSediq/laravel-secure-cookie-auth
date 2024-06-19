@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AuthUserResource;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -34,8 +35,17 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
+        // You may disable this if you don't want users to login after registration.
+        $this->login($user);
 
-        return $this->respond($user, "Registed successfully.");
+        return $this->respond(AuthUserResource::make($user), "Registered successfully.");
+    }
+
+    /**
+     * Login the currently registered user
+     */
+    public function login($user){
+        Auth::login($user);
+        return $user->token = $user->createToken($user->name)->plainTextToken;
     }
 }
